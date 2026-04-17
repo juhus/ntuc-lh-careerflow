@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerFlow — Career Placement Programme Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+:root {
+  --navy: #1a365d;
+  --blue: #2b6cb0;
+  --blue-light: #3182ce;
+  --blue-50: #ebf8ff;
+  --blue-100: #bee3f8;
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --green: #38a169;
+  --green-bg: #f0fff4;
+  --amber: #d69e2e;
+  --amber-bg: #fffff0;
+  --red: #e53e3e;
+  --red-bg: #fff5f5;
+  --white: #ffffff;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+  --radius: 8px;
+  --radius-lg: 12px;
+  --sidebar-w: 240px;
+  --topbar-h: 56px;
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+html { font-size: 14px; }
+body { font-family: var(--font); color: var(--slate-800); background: var(--slate-50); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+a { color: var(--blue); text-decoration: none; }
+/* Skip link */
+.skip-link { position: absolute; top: -100%; left: 16px; z-index: 9999; background: var(--navy); color: white; padding: 8px 16px; border-radius: var(--radius); font-weight: 600; font-size: 0.875rem; transition: top 0.2s; }
+.skip-link:focus { top: 8px; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; font-size: inherit; }
+input, select, textarea { font-family: inherit; font-size: inherit; }
+
+/* ===== LAYOUT ===== */
+.app { display: flex; min-height: 100vh; }
+.sidebar {
+  width: var(--sidebar-w); background: var(--navy); color: var(--white);
+  display: flex; flex-direction: column; position: fixed; top: 0; left: 0;
+  height: 100vh; z-index: 100;
+}
+.sidebar-brand { padding: 20px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-brand h1 {
+  font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #bee3f8, #fff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.sidebar-brand span { font-size: 0.75rem; color: var(--slate-400); display: block; margin-top: 2px; }
+.sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px; padding: 10px 20px;
+  color: rgba(255,255,255,0.6); font-size: 0.875rem; font-weight: 500;
+  transition: all 0.2s ease, border-left-color 0.3s ease; cursor: pointer; border-left: 3px solid transparent;
+  touch-action: manipulation; min-height: 44px;
+}
+.nav-item:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.05); }
+.nav-item.active { color: var(--white); background: rgba(255,255,255,0.1); border-left-color: var(--blue-100); }
+.nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+.nav-section { padding: 16px 20px 6px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); font-weight: 700; }
+.sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+.walkthrough-btn {
+  width: 100%; padding: 10px; background: linear-gradient(135deg, var(--blue), var(--blue-light));
+  color: white; border-radius: var(--radius); font-weight: 600; font-size: 0.8125rem;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: opacity 0.15s; box-shadow: 0 2px 8px rgba(43,108,176,0.4);
+}
+.walkthrough-btn:hover { opacity: 0.9; }
+.main { flex: 1; margin-left: var(--sidebar-w); }
+.topbar {
+  height: var(--topbar-h); background: var(--white); border-bottom: 1px solid var(--slate-200);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; position: sticky; top: 0; z-index: 50;
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-left h2 { font-size: 1rem; font-weight: 700; color: var(--slate-900); }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--blue);
+  color: white; display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700;
+}
+.badge { display: inline-flex; padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; line-height: 1.4; }
+.badge-green { background: var(--green-bg); color: var(--green); }
+.badge-amber { background: var(--amber-bg); color: var(--amber); }
+.badge-red { background: var(--red-bg); color: var(--red); }
+.badge-blue { background: var(--blue-50); color: var(--blue); }
+.badge-slate { background: var(--slate-100); color: var(--slate-600); }
+.content { padding: 24px; max-width: 1440px; margin: 0 auto; }
+.page { display: none; opacity: 0; transition: opacity 0.2s ease; }
+.page.active { display: block; opacity: 1; }
+
+/* Cards */
+.card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--slate-200); box-shadow: var(--shadow-sm); overflow: hidden; transition: box-shadow 0.2s ease, transform 0.2s ease; }
+.card:hover { box-shadow: var(--shadow-md); }
+.card-header { padding: 16px 20px; border-bottom: 1px solid var(--slate-100); display: flex; align-items: center; justify-content: space-between; }
+.card-header h3 { font-size: 0.9375rem; font-weight: 700; }
+.card-body { padding: 20px; }
+.card-body.compact { padding: 0; }
+
+/* KPI */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.kpi-card { background: var(--white); border-radius: var(--radius-lg); padding: 20px; border: 1px solid var(--slate-200); box-shadow: var(--shadow-sm); }
+.kpi-label { font-size: 0.75rem; color: var(--slate-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.kpi-value { font-size: 1.75rem; font-weight: 800; color: var(--slate-900); margin: 4px 0; font-variant-numeric: tabular-nums; }
+.kpi-change { font-size: 0.75rem; font-weight: 600; }
+.kpi-change.up { color: var(--green); }
+.kpi-change.down { color: var(--red); }
+
+/* Tables */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead { background: var(--slate-50); }
+th { padding: 10px 16px; text-align: left; font-size: 0.75rem; font-weight: 600; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--slate-200); white-space: nowrap; }
+td { padding: 12px 16px; border-bottom: 1px solid var(--slate-100); font-size: 0.875rem; }
+tbody tr:hover { background: var(--slate-50); }
+
+/* Grids */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius); font-weight: 600; font-size: 0.8125rem; transition: all 0.2s ease; touch-action: manipulation; min-height: 44px; }
+.btn-primary { background: var(--blue); color: white; }
+.btn-primary:hover { background: var(--navy); }
+.btn-secondary { background: var(--slate-100); color: var(--slate-700); }
+.btn-secondary:hover { background: var(--slate-200); }
+.btn-sm { padding: 8px 14px; font-size: 0.75rem; min-height: 44px; min-width: 44px; }
+.btn:active { transform: scale(0.97); }
+.btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+/* Pipeline */
+.pipeline { display: flex; gap: 2px; margin-bottom: 24px; }
+.pipeline-stage { flex: 1; padding: 12px 16px; background: var(--white); border: 1px solid var(--slate-200); text-align: center; cursor: pointer; transition: all 0.2s ease; touch-action: manipulation; }
+.pipeline-stage:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.pipeline-stage:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+.pipeline-stage:hover { background: var(--blue-50); transform: scale(1.03); box-shadow: var(--shadow-md); }
+.pipeline-stage .count { font-size: 1.25rem; font-weight: 800; color: var(--slate-900); font-variant-numeric: tabular-nums; }
+.pipeline-stage .label { font-size: 0.65rem; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+
+/* Progress */
+.progress-bar { height: 8px; background: var(--slate-200); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+
+/* Forms */
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--slate-700); margin-bottom: 4px; }
+.form-input { width: 100%; padding: 8px 12px; border: 1px solid var(--slate-300); border-radius: var(--radius); background: var(--white); transition: border-color 0.15s; font-size: 0.875rem; }
+.form-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(43,108,176,0.15); }
+.form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+
+/* Score */
+.score-bar { display: flex; align-items: center; gap: 8px; }
+.score-fill { width: 60px; height: 6px; background: var(--slate-200); border-radius: 3px; overflow: hidden; }
+.score-fill-inner { height: 100%; border-radius: 3px; }
+.score-value { font-size: 0.75rem; font-weight: 700; min-width: 28px; font-variant-numeric: tabular-nums; }
+
+/* Tabs */
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--slate-200); margin-bottom: 20px; }
+.tab { padding: 10px 20px; font-size: 0.8125rem; font-weight: 600; color: var(--slate-500); border-bottom: 2px solid transparent; transition: all 0.2s ease; cursor: pointer; touch-action: manipulation; min-height: 44px; display: flex; align-items: center; }
+.tab:hover { color: var(--slate-700); }
+.tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* Toast */
+.toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; background: var(--slate-900); color: white; border-radius: var(--radius); font-size: 0.8125rem; font-weight: 500; box-shadow: var(--shadow-lg); transform: translateY(100px); opacity: 0; transition: all 0.3s ease; z-index: 9999; display: flex; align-items: center; gap: 8px; }
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: var(--green); }
+
+/* Skills */
+.skill-tag { display: inline-flex; padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; margin: 3px; }
+.skill-tag.match { background: var(--green-bg); color: var(--green); }
+.skill-tag.gap { background: var(--amber-bg); color: var(--amber); }
+.skill-tag.has { background: var(--blue-50); color: var(--blue); }
+
+/* Course cards */
+.course-card { border: 2px solid var(--slate-200); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 12px; transition: all 0.2s ease; cursor: pointer; touch-action: manipulation; }
+.course-card:hover { border-color: var(--blue); background: var(--blue-50); }
+.course-card.recommended { border-color: var(--blue); }
+.fit-score { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+.fit-score.high { background: var(--green-bg); color: var(--green); }
+.fit-score.medium { background: var(--amber-bg); color: var(--amber); }
+
+/* Animations */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeInUp 0.4s ease forwards; }
+.fade-in-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.fade-in-delay-2 { animation-delay: 0.2s; opacity: 0; }
+/* KPI card stagger animation */
+.kpi-card { opacity: 0; animation: fadeInUp 0.4s ease forwards; }
+.kpi-card:nth-child(1) { animation-delay: 0ms; }
+.kpi-card:nth-child(2) { animation-delay: 30ms; }
+.kpi-card:nth-child(3) { animation-delay: 60ms; }
+.kpi-card:nth-child(4) { animation-delay: 90ms; }
+/* Page transition */
+@keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.page.active { animation: pageFadeIn 0.2s ease forwards; }
+
+/* Notification bell */
+.notification-bell { position: relative; cursor: pointer; touch-action: manipulation; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+.notification-bell svg { width: 20px; height: 20px; color: var(--slate-500); }
+.notification-bell:hover svg { color: var(--slate-700); }
+.notification-count { position: absolute; top: 4px; right: 4px; background: var(--red); color: white; font-size: 0.6rem; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; }
+
+/* Walkthrough selector backdrop animation */
+.wt-selector-overlay-animated { animation: backdropFadeIn 0.3s ease forwards; }
+@keyframes backdropFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.wt-selector-overlay-animated > div { animation: modalSlideUp 0.3s ease forwards; }
+@keyframes modalSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Empty state */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--slate-400); }
+.empty-state svg { width: 48px; height: 48px; margin-bottom: 12px; color: var(--slate-300); }
+.empty-state p { font-size: 0.875rem; font-weight: 500; }
+
+/* Donut legend */
+.donut-legend { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; width: 100%; }
+.donut-legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--slate-600); }
+.donut-legend-swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+.donut-legend-value { margin-left: auto; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Integration tiles */
+.integration-tile { display: flex; align-items: center; gap: 16px; padding: 20px; border: 1px solid var(--slate-200); border-radius: var(--radius-lg); background: var(--white); }
+.integration-icon { width: 48px; height: 48px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; }
+.integration-status { margin-left: auto; }
+
+/* Chart */
+.chart-container { position: relative; }
+.chart-bar { display: flex; align-items: flex-end; gap: 8px; height: 160px; padding-top: 12px; position: relative;
+  background-image: repeating-linear-gradient(to bottom, transparent, transparent calc(20% - 1px), var(--slate-100) calc(20% - 1px), var(--slate-100) 20%);
+}
+.chart-axis-label { font-size: 0.65rem; color: var(--slate-400); font-weight: 600; text-align: center; margin-top: 4px; }
+.chart-y-label { font-size: 0.6rem; color: var(--slate-400); font-weight: 600; position: absolute; left: -4px; writing-mode: vertical-rl; transform: rotate(180deg); top: 50%; }
+.chart-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; }
+.chart-fill { width: 100%; border-radius: 6px 6px 0 0; transition: height 0.6s ease, opacity 0.2s ease; min-width: 24px; cursor: pointer; }
+.chart-fill:hover { opacity: 0.8; }
+.chart-col .chart-tooltip { display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--slate-900); color: white; padding: 6px 10px; border-radius: var(--radius); font-size: 0.7rem; font-weight: 600; white-space: nowrap; z-index: 10; pointer-events: none; margin-bottom: 4px; }
+.chart-col:hover .chart-tooltip { display: block; }
+.chart-label { font-size: 0.65rem; color: var(--slate-500); font-weight: 600; text-align: center; white-space: nowrap; }
+.chart-value { font-size: 0.7rem; font-weight: 700; color: var(--slate-700); font-variant-numeric: tabular-nums; }
+
+/* Donut */
+.donut { width: 120px; height: 120px; border-radius: 50%; position: relative; }
+.donut-center { position: absolute; inset: 25%; background: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.donut-center .value { font-size: 1.25rem; font-weight: 800; color: var(--slate-900); }
+.donut-center .dlabel { font-size: 0.6rem; color: var(--slate-500); }
+
+/* Audit */
+.audit-entry { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--slate-100); font-size: 0.8125rem; }
+.audit-time { color: var(--slate-400); font-size: 0.75rem; white-space: nowrap; min-width: 80px; font-weight: 500; }
+.audit-action { color: var(--slate-700); flex: 1; }
+.audit-user { color: var(--slate-500); font-weight: 600; min-width: 100px; }
+
+/* Walkthrough */
+.wt-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.6); z-index: 200; display: none; backdrop-filter: blur(2px); }
+.wt-overlay.active { display: block; }
+.wt-highlight { position: absolute; border: 3px solid var(--blue-light); border-radius: var(--radius-lg); box-shadow: 0 0 0 9999px rgba(15,23,42,0.55); z-index: 201; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.wt-card { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 24px 28px; max-width: 520px; width: 90%; z-index: 202; }
+.wt-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.wt-card p { font-size: 0.875rem; color: var(--slate-600); line-height: 1.6; }
+.wt-progress { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.wt-progress-bar { flex: 1; height: 4px; background: var(--slate-200); border-radius: 2px; }
+.wt-progress-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.3s; }
+.wt-progress-text { font-size: 0.75rem; color: var(--slate-400); font-weight: 600; white-space: nowrap; }
+.wt-buttons { display: flex; gap: 8px; margin-top: 16px; }
+.wt-buttons .btn { flex: 1; justify-content: center; }
+.wt-persona { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--slate-100); }
+.wt-persona-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; color: white; }
+.wt-persona-info .name { font-weight: 700; font-size: 0.875rem; }
+.wt-persona-info .role { font-size: 0.75rem; color: var(--slate-500); }
+
+/* Walkthrough selector */
+.wt-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.wt-option { padding: 20px; border: 2px solid var(--slate-200); border-radius: var(--radius-lg); cursor: pointer; transition: all 0.2s; text-align: center; }
+.wt-option:hover { border-color: var(--blue); background: var(--blue-50); }
+.wt-option h4 { font-size: 0.875rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.wt-option p { font-size: 0.75rem; color: var(--slate-500); }
+.wt-option .icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+
+/* Assessment progress */
+.assessment-progress { display: flex; gap: 4px; margin-bottom: 24px; }
+.assessment-dot { flex: 1; height: 4px; background: var(--slate-200); border-radius: 2px; }
+.assessment-dot.done { background: var(--blue); }
+.assessment-dot.current { background: var(--blue); opacity: 0.5; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .grid-2, .grid-2-1, .grid-3 { grid-template-columns: 1fr; }
+  .wt-selector { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div class="app">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="sidebar-brand">
+      <h1>CareerFlow</h1>
+      <span>NTUC LearningHub</span>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section">Overview</div>
+      <div class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')" role="button" tabindex="0" aria-current="page" aria-label="Dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-section">Modules</div>
+      <div class="nav-item" data-page="enrolment" onclick="navigateTo('enrolment')" role="button" tabindex="0" aria-label="Smart Enrolment">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Smart Enrolment
+      </div>
+      <div class="nav-item" data-page="trainees" onclick="navigateTo('trainees')" role="button" tabindex="0" aria-label="Trainees">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Trainees
+      </div>
+      <div class="nav-item" data-page="placements" onclick="navigateTo('placements')" role="button" tabindex="0" aria-label="Placements">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+        Placements
+      </div>
+      <div class="nav-item" data-page="reports" onclick="navigateTo('reports')" role="button" tabindex="0" aria-label="Reports">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Reports
+      </div>
+      <div class="nav-section">System</div>
+      <div class="nav-item" data-page="integrations" onclick="navigateTo('integrations')" role="button" tabindex="0" aria-label="Integrations">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Integrations
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <button class="walkthrough-btn" onclick="openWalkthroughSelector()" aria-label="Start guided walkthrough">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Guided Walkthrough
+      </button>
+    </div>
+  </nav>
+
+  <div class="main" role="main" id="main-content">
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page active" id="page-dashboard">
+      <div class="topbar">
+        <div class="topbar-left"><h2>Programme Dashboard</h2><span class="badge badge-blue">Live</span></div>
+        <div class="topbar-right">
+          <span style="font-size:0.8125rem; color:var(--slate-500)">Last updated: 2 min ago</span>
+          <button class="notification-bell" aria-label="Notifications — 5 at-risk alerts" title="5 at-risk alerts">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="notification-count" aria-hidden="true">5</span>
+          </button>
+          <div class="avatar" aria-label="User profile: Sarah Chen">SC</div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="kpi-grid" id="kpi-grid">
+          <div class="kpi-card"><div class="kpi-label">Active Trainees</div><div class="kpi-value">247</div><div class="kpi-change up">+12% vs last quarter</div></div>
+          <div class="kpi-card"><div class="kpi-label">Placement Rate</div><div class="kpi-value">78.4%</div><div class="kpi-change up">+8.2% vs target</div></div>
+          <div class="kpi-card"><div class="kpi-label">At-Risk Placements</div><div class="kpi-value" style="color:var(--amber)">5</div><div class="kpi-change down">3 new this week</div></div>
+          <div class="kpi-card"><div class="kpi-label">Avg Days to Placement</div><div class="kpi-value">42</div><div class="kpi-change up">-6 days vs last quarter</div></div>
+        </div>
+        <div class="card" style="margin-bottom:24px" id="pipeline-section">
+          <div class="card-header">
+            <h3>Trainee Pipeline</h3>
+            <select class="form-input form-select" aria-label="Filter pipeline by programme" style="width:auto; padding:4px 32px 4px 10px; font-size:0.75rem"><option>All Programmes</option><option>SCTP - Business Analyst</option><option>SCTP - Full Stack Dev</option><option>PnT - ICT Professional</option></select>
+          </div>
+          <div class="card-body">
+            <div class="pipeline">
+              <div class="pipeline-stage"><div class="count">18</div><div class="label">Application</div></div>
+              <div class="pipeline-stage"><div class="count">42</div><div class="label">Enrolled</div></div>
+              <div class="pipeline-stage"><div class="count">85</div><div class="label">Training</div></div>
+              <div class="pipeline-stage"><div class="count">38</div><div class="label">Completed</div></div>
+              <div class="pipeline-stage"><div class="count">31</div><div class="label">Job Seeking</div></div>
+              <div class="pipeline-stage"><div class="count">24</div><div class="label">Placed</div></div>
+              <div class="pipeline-stage"><div class="count">9</div><div class="label">Verified</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="grid-2-1">
+          <div class="card" id="at-risk-section">
+            <div class="card-header"><h3>At-Risk Placements</h3><span class="badge badge-red">5 need attention</span></div>
+            <div class="card-body compact">
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Trainee</th><th>Programme</th><th>Risk</th><th>Days Stuck</th><th>Action</th></tr></thead>
+                  <tbody id="at-risk-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="card" id="chart-section">
+            <div class="card-header"><h3>Placement Rate by Programme</h3></div>
+            <div class="card-body">
+              <div class="chart-container" role="img" aria-label="Bar chart showing placement rates: Business Analyst 82%, Full Stack Dev 76%, Data Analyst 71%, ICT Professional 88%, Cybersecurity 65%">
+                <div class="chart-bar">
+                  <div class="chart-col"><div class="chart-value">82%</div><div class="chart-fill" style="height:82%;background:var(--blue)" role="presentation"></div><div class="chart-label">BA</div><div class="chart-tooltip">Business Analyst — 82%</div></div>
+                  <div class="chart-col"><div class="chart-value">76%</div><div class="chart-fill" style="height:76%;background:var(--blue)" role="presentation"></div><div class="chart-label">FSD</div><div class="chart-tooltip">Full Stack Developer — 76%</div></div>
+                  <div class="chart-col"><div class="chart-value">71%</div><div class="chart-fill" style="height:71%;background:var(--blue-light)" role="presentation"></div><div class="chart-label">DA</div><div class="chart-tooltip">Data Analyst — 71%</div></div>
+                  <div class="chart-col"><div class="chart-value">88%</div><div class="chart-fill" style="height:88%;background:var(--navy)" role="presentation"></div><div class="chart-label">ICT</div><div class="chart-tooltip">ICT Professional — 88%</div></div>
+                  <div class="chart-col"><div class="chart-value">65%</div><div class="chart-fill" style="height:65%;background:var(--blue-light)" role="presentation"></div><div class="chart-label">Cyber</div><div class="chart-tooltip">Cybersecurity — 65%</div></div>
+                </div>
+                <div class="chart-axis-label">Programme</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ENROLMENT ===== -->
+    <div class="page" id="page-enrolment">
+      <div class="topbar"><div class="topbar-left"><h2>Smart Enrolment</h2></div><div class="topbar-right"><div class="avatar" aria-label="User profile: Sarah Chen">SC</div></div></div>
+      <div class="content">
+        <div style="max-width:720px; margin:0 auto;">
+          <div class="assessment-progress"><div class="assessment-dot done"></div><div class="assessment-dot done"></div><div class="assessment-dot done"></div><div class="assessment-dot current"></div><div class="assessment-dot"></div></div>
+          <div class="card" style="margin-bottom:20px">
+            <div class="card-header"><h3>AI Course Assessment — Marcus Lim</h3><span class="badge badge-green">Analysis Complete</span></div>
+            <div class="card-body">
+              <div style="margin-bottom:20px">
+                <div class="form-label" style="margin-bottom:8px">Background Summary</div>
+                <p style="font-size:0.875rem; color:var(--slate-600); background:var(--slate-50); padding:12px 16px; border-radius:var(--radius); border-left:3px solid var(--blue)">
+                  35-year-old retail manager with 10 years of experience in inventory management, team leadership, and customer analytics. Bachelor's in Business Administration. Seeking transition to ICT roles with a focus on data-driven decision making.
+                </p>
+              </div>
+              <div>
+                <div class="form-label" style="margin-bottom:8px">Transferable Skills Identified</div>
+                <div>
+                  <span class="skill-tag has">Data Analysis (Excel/POS)</span>
+                  <span class="skill-tag has">Team Leadership</span>
+                  <span class="skill-tag has">Stakeholder Management</span>
+                  <span class="skill-tag has">Inventory Systems</span>
+                  <span class="skill-tag has">KPI Reporting</span>
+                  <span class="skill-tag match">Business Process Design</span>
+                  <span class="skill-tag gap">SQL / Database</span>
+                  <span class="skill-tag gap">Requirements Gathering</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-label" style="margin-bottom:12px; font-size:0.9375rem">Recommended Courses</div>
+          <div class="course-card recommended fade-in">
+            <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:10px">
+              <div><div style="font-size:0.75rem; font-weight:700; color:var(--blue); margin-bottom:2px">BEST MATCH</div><h4 style="font-size:1rem; font-weight:700">SCTP — Business Analyst Programme</h4><p style="font-size:0.8125rem; color:var(--slate-500); margin-top:2px">Duration: 6 months | Full-time</p></div>
+              <div class="fit-score high">92% fit</div>
+            </div>
+            <p style="font-size:0.8125rem; color:var(--slate-600); margin-bottom:12px"><strong>Why this course:</strong> Your retail management experience in data-driven decision making, KPI tracking, and stakeholder management directly maps to Business Analyst competencies. Only requires upskilling in SQL and formal requirements gathering.</p>
+            <div><div class="form-label" style="margin-bottom:6px; font-size:0.75rem">Skills Gap to Address</div><span class="skill-tag gap">SQL Fundamentals</span><span class="skill-tag gap">Requirements Documentation</span><span class="skill-tag gap">UML / Process Modeling</span></div>
+            <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--slate-100); display:flex; gap:8px">
+              <button class="btn btn-primary btn-sm">Enrol Trainee</button>
+              <button class="btn btn-secondary btn-sm">View Full Roadmap</button>
+            </div>
+          </div>
+          <div class="course-card fade-in fade-in-delay-1">
+            <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:10px">
+              <div><h4 style="font-size:1rem; font-weight:700">SCTP — Data Analyst Programme</h4><p style="font-size:0.8125rem; color:var(--slate-500); margin-top:2px">Duration: 6 months | Full-time</p></div>
+              <div class="fit-score medium">74% fit</div>
+            </div>
+            <p style="font-size:0.8125rem; color:var(--slate-600)"><strong>Why:</strong> Good analytical foundation but requires more technical upskilling. Consider if candidate is interested in a more technical path.</p>
+          </div>
+          <div class="course-card fade-in fade-in-delay-2">
+            <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:10px">
+              <div><h4 style="font-size:1rem; font-weight:700">SCTP — Full Stack Developer Programme</h4><p style="font-size:0.8125rem; color:var(--slate-500); margin-top:2px">Duration: 9 months | Full-time</p></div>
+              <div class="fit-score medium">41% fit</div>
+            </div>
+            <p style="font-size:0.8125rem; color:var(--slate-600)"><strong>Not recommended:</strong> Significant skills gap in programming. High dropout risk without prior coding experience.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TRAINEES ===== -->
+    <div class="page" id="page-trainees">
+      <div class="topbar">
+        <div class="topbar-left"><h2>Trainees</h2><span class="badge badge-slate">247 total</span></div>
+        <div class="topbar-right"><label for="trainee-search" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search trainees</label><input class="form-input" id="trainee-search" placeholder="Search trainees..." style="width:220px" aria-label="Search trainees" /><div class="avatar" aria-label="User profile: Sarah Chen">SC</div></div>
+      </div>
+      <div class="content">
+        <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap">
+          <label for="filter-programme" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Filter by programme</label>
+          <select class="form-input form-select" id="filter-programme" aria-label="Filter by programme" style="width:auto"><option>All Programmes</option><option>SCTP - Business Analyst</option><option>SCTP - Full Stack Dev</option><option>PnT - ICT Professional</option></select>
+          <label for="filter-stage" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Filter by stage</label>
+          <select class="form-input form-select" id="filter-stage" aria-label="Filter by stage" style="width:auto"><option>All Stages</option><option>Application</option><option>Enrolled</option><option>Training</option><option>Completed</option><option>Job Seeking</option><option>Placed</option><option>Verified</option></select>
+          <label for="filter-risk" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Filter by risk level</label>
+          <select class="form-input form-select" id="filter-risk" aria-label="Filter by risk level" style="width:auto"><option>All Risk Levels</option><option>On Track</option><option>At Risk</option><option>Action Needed</option></select>
+        </div>
+        <div class="card"><div class="card-body compact"><div class="table-wrap"><table>
+          <thead><tr><th>Name</th><th>Programme</th><th>Stage</th><th>Employer</th><th>Documents</th><th>Risk</th><th>Consent</th></tr></thead>
+          <tbody id="trainee-table"></tbody>
+        </table></div>
+        <div class="empty-state" id="trainee-empty" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <p>No trainees match the current filters.</p>
+          <p style="font-size:0.75rem; color:var(--slate-400); margin-top:4px">Try adjusting your programme, stage, or risk level filters.</p>
+        </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- ===== PLACEMENTS ===== -->
+    <div class="page" id="page-placements">
+      <div class="topbar"><div class="topbar-left"><h2>Placement Matching</h2></div><div class="topbar-right"><div class="avatar" aria-label="User profile: Sarah Chen">SC</div></div></div>
+      <div class="content">
+        <div class="tabs" role="tablist" aria-label="Placement views"><div class="tab active" role="tab" aria-selected="true">Suggested Matches</div><div class="tab" role="tab" aria-selected="false">Active Placements</div><div class="tab" role="tab" aria-selected="false">Employers</div></div>
+        <div class="grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><h3>Top Matches Today</h3><span class="badge badge-blue">12 new</span></div>
+            <div class="card-body compact"><table>
+              <thead><tr><th>Trainee</th><th>Position</th><th>Employer</th><th>Fit</th><th></th></tr></thead>
+              <tbody id="match-tbody"></tbody>
+            </table></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Match Insights</h3></div>
+            <div class="card-body">
+              <div style="margin-bottom:20px"><div class="kpi-label" style="margin-bottom:4px">Match Success Rate</div><div style="font-size:1.5rem; font-weight:800; color:var(--navy)">74%</div><div class="progress-bar" style="margin-top:8px"><div class="progress-fill" style="width:74%; background:var(--green)"></div></div></div>
+              <div style="margin-bottom:20px"><div class="kpi-label" style="margin-bottom:4px">Open Positions</div><div style="font-size:1.5rem; font-weight:800">38</div><p style="font-size:0.75rem; color:var(--slate-500)">Across 15 employers</p></div>
+              <div style="margin-bottom:20px"><div class="kpi-label" style="margin-bottom:4px">CVs Needing Update</div><div style="font-size:1.5rem; font-weight:800; color:var(--amber)">7</div><p style="font-size:0.75rem; color:var(--slate-500)">Last updated &gt; 30 days ago</p></div>
+              <div><div class="kpi-label" style="margin-bottom:4px">Avg Interview-to-Offer</div><div style="font-size:1.5rem; font-weight:800">12 days</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REPORTS ===== -->
+    <div class="page" id="page-reports">
+      <div class="topbar"><div class="topbar-left"><h2>Reports &amp; Compliance</h2></div><div class="topbar-right"><div class="avatar" aria-label="User profile: Sarah Chen">SC</div></div></div>
+      <div class="content">
+        <div class="tabs" role="tablist" aria-label="Report types">
+          <div class="tab active" role="tab" aria-selected="true" onclick="showReportTab(this,'ssg')">SSG Reports</div>
+          <div class="tab" role="tab" aria-selected="false" onclick="showReportTab(this,'audit')">Audit Trail</div>
+          <div class="tab" role="tab" aria-selected="false" onclick="showReportTab(this,'pdpa')">PDPA &amp; Consent</div>
+        </div>
+        <div id="report-ssg">
+          <div class="grid-2" style="margin-bottom:16px">
+            <div class="card">
+              <div class="card-header"><h3>Monthly Placement Outcome Report — March 2026</h3></div>
+              <div class="card-body">
+                <div class="grid-2" style="margin-bottom:16px">
+                  <div><div class="kpi-label">Report Period</div><div style="font-weight:600">1 - 31 March 2026</div></div>
+                  <div><div class="kpi-label">Status</div><span class="badge badge-green">Auto-generated</span></div>
+                  <div><div class="kpi-label">Total Trainees Tracked</div><div style="font-weight:600">247</div></div>
+                  <div><div class="kpi-label">Verified Placements</div><div style="font-weight:600">68</div></div>
+                </div>
+                <table style="font-size:0.8125rem">
+                  <thead><tr><th>Employment Type</th><th>Count</th><th>Verified</th><th>Pending</th></tr></thead>
+                  <tbody>
+                    <tr><td>Full-time (LHub matched)</td><td>32</td><td><span class="badge badge-green">28</span></td><td>4</td></tr>
+                    <tr><td>Full-time (Self-sourced)</td><td>18</td><td><span class="badge badge-green">15</span></td><td>3</td></tr>
+                    <tr><td>Part-time</td><td>8</td><td><span class="badge badge-green">6</span></td><td>2</td></tr>
+                    <tr><td>Already Employed</td><td>10</td><td><span class="badge badge-green">10</span></td><td>0</td></tr>
+                  </tbody>
+                </table>
+                <div style="margin-top:16px; display:flex; gap:8px">
+                  <button class="btn btn-primary" onclick="showToast('SSG report exported as Excel','success')">Export SSG Format</button>
+                  <button class="btn btn-secondary">Preview PDF</button>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3>Verification Summary</h3></div>
+              <div class="card-body" style="display:flex; flex-direction:column; align-items:center" role="img" aria-label="Donut chart: 72% Verified (59), 13% Pending (11), 15% Unverified (12)">
+                <div class="donut" style="background: conic-gradient(var(--green) 0% 72%, var(--amber) 72% 85%, var(--slate-200) 85% 100%); margin-bottom:16px">
+                  <div class="donut-center"><span class="value" style="font-variant-numeric:tabular-nums">72%</span><span class="dlabel">Verified</span></div>
+                </div>
+                <div class="donut-legend">
+                  <div class="donut-legend-item"><div class="donut-legend-swatch" style="background:var(--green)"></div><span>Verified</span><span class="donut-legend-value">59 (72%)</span></div>
+                  <div class="donut-legend-item"><div class="donut-legend-swatch" style="background:var(--amber)"></div><span>Pending</span><span class="donut-legend-value">11 (13%)</span></div>
+                  <div class="donut-legend-item"><div class="donut-legend-swatch" style="background:var(--slate-200)"></div><span>Unverified</span><span class="donut-legend-value">12 (15%)</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="report-audit" style="display:none">
+          <div class="card">
+            <div class="card-header"><h3>System Audit Trail</h3><button class="btn btn-secondary btn-sm">Export Log</button></div>
+            <div class="card-body" id="audit-body"></div>
+          </div>
+        </div>
+        <div id="report-pdpa" style="display:none">
+          <div class="card">
+            <div class="card-header"><h3>PDPA Consent Management</h3><span class="badge badge-green">100% consent tracked</span></div>
+            <div class="card-body compact"><table>
+              <thead><tr><th>Trainee</th><th>Data Collection</th><th>Sharing with Employers</th><th>SSG Reporting</th><th>Marketing</th><th>Last Updated</th></tr></thead>
+              <tbody id="pdpa-tbody"></tbody>
+            </table></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INTEGRATIONS ===== -->
+    <div class="page" id="page-integrations">
+      <div class="topbar"><div class="topbar-left"><h2>Integrations</h2></div><div class="topbar-right"><div class="avatar" aria-label="User profile: Sarah Chen">SC</div></div></div>
+      <div class="content">
+        <p style="font-size:0.875rem; color:var(--slate-500); margin-bottom:20px">Connected systems and data sync status</p>
+        <div class="grid-3" id="integration-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Walkthrough overlay -->
+<div class="wt-overlay" id="wt-overlay">
+  <div class="wt-highlight" id="wt-highlight"></div>
+  <div class="wt-card" id="wt-card">
+    <div class="wt-persona" id="wt-persona"></div>
+    <h3 id="wt-title"></h3>
+    <p id="wt-text"></p>
+    <div class="wt-progress"><div class="wt-progress-bar"><div class="wt-progress-fill" id="wt-progress-fill"></div></div><span class="wt-progress-text" id="wt-progress-text"></span></div>
+    <div class="wt-buttons"><button class="btn btn-secondary" id="wt-prev" onclick="wtPrev()">Previous</button><button class="btn btn-primary" id="wt-next" onclick="wtNext()">Next</button></div>
+  </div>
+</div>
+
+<!-- Walkthrough selector -->
+<div class="wt-overlay wt-selector-overlay-animated" id="wt-selector-overlay" style="display:none; align-items:center; justify-content:center" role="dialog" aria-label="Select walkthrough">
+  <div style="background:var(--white); border-radius:var(--radius-lg); padding:32px; max-width:680px; width:90%; box-shadow:var(--shadow-lg); position:relative; z-index:201">
+    <h2 style="font-size:1.125rem; font-weight:800; color:var(--navy); margin-bottom:4px">Guided Walkthroughs</h2>
+    <p style="font-size:0.8125rem; color:var(--slate-500); margin-bottom:20px">Experience CareerFlow through the eyes of real users</p>
+    <div class="wt-selector">
+      <div class="wt-option" onclick="startWalkthrough('sarah')">
+        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+        <h4>Sarah — Programme Coordinator</h4>
+        <p>Dashboard overview, at-risk detection, proactive alerts</p>
+      </div>
+      <div class="wt-option" onclick="startWalkthrough('marcus')">
+        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+        <h4>Marcus — Career Switcher</h4>
+        <p>Smart assessment, AI course matching, learning roadmap</p>
+      </div>
+      <div class="wt-option" onclick="startWalkthrough('compliance')">
+        <span class="icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+        <h4>Automated Compliance</h4>
+        <p>SSG reporting, audit trails, PDPA consent tracking</p>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:16px"><button class="btn btn-secondary" onclick="closeWalkthroughSelector()">Close</button></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+<script>
+// ===== DATA =====
+var atRiskData = [
+  { name: "Tan Wei Ming", prog: "SCTP - Full Stack Dev", risk: "No employer match", riskLevel: "red", days: 28 },
+  { name: "Priya Sharma", prog: "PnT - ICT Professional", risk: "Low engagement", riskLevel: "amber", days: 14 },
+  { name: "Ahmad Razak", prog: "SCTP - Data Analyst", risk: "CV outdated", riskLevel: "red", days: 21 },
+  { name: "Lee Siew Lan", prog: "SCTP - Business Analyst", risk: "Employer dropped", riskLevel: "amber", days: 7 },
+  { name: "Chen Jia Hao", prog: "PnT - Cybersecurity", risk: "No docs submitted", riskLevel: "amber", days: 35 }
+];
+
+var trainees = [
+  { name: "Tan Wei Ming", programme: "SCTP - Full Stack Dev", stage: "Job Seeking", employer: "\u2014", docs: "2/3", risk: "action-needed", consent: "granted" },
+  { name: "Priya Sharma", programme: "PnT - ICT Professional", stage: "Placed", employer: "DBS Bank", docs: "3/3", risk: "at-risk", consent: "granted" },
+  { name: "Marcus Lim", programme: "SCTP - Business Analyst", stage: "Enrolled", employer: "\u2014", docs: "1/3", risk: "on-track", consent: "granted" },
+  { name: "Ahmad Razak", programme: "SCTP - Data Analyst", stage: "Completed", employer: "\u2014", docs: "0/3", risk: "action-needed", consent: "granted" },
+  { name: "Lee Siew Lan", programme: "SCTP - Business Analyst", stage: "Job Seeking", employer: "\u2014", docs: "2/3", risk: "at-risk", consent: "pending" },
+  { name: "Chen Jia Hao", programme: "PnT - Cybersecurity", stage: "Placed", employer: "NCS Group", docs: "1/3", risk: "at-risk", consent: "granted" },
+  { name: "Lim Mei Ying", programme: "SCTP - Full Stack Dev", stage: "Verified", employer: "Shopee", docs: "3/3", risk: "on-track", consent: "granted" },
+  { name: "Ng Kai Wen", programme: "SCTP - Data Analyst", stage: "Training", employer: "\u2014", docs: "\u2014", risk: "on-track", consent: "granted" },
+  { name: "Siti Nurhaliza", programme: "PnT - ICT Professional", stage: "Training", employer: "\u2014", docs: "\u2014", risk: "on-track", consent: "granted" },
+  { name: "David Ong", programme: "SCTP - Business Analyst", stage: "Verified", employer: "Singtel", docs: "3/3", risk: "on-track", consent: "granted" },
+  { name: "Lakshmi Devi", programme: "SCTP - Full Stack Dev", stage: "Placed", employer: "GovTech", docs: "2/3", risk: "on-track", consent: "granted" },
+  { name: "Wong Jun Wei", programme: "PnT - Cybersecurity", stage: "Training", employer: "\u2014", docs: "\u2014", risk: "on-track", consent: "granted" },
+  { name: "Fatimah Zahra", programme: "SCTP - Data Analyst", stage: "Job Seeking", employer: "\u2014", docs: "3/3", risk: "on-track", consent: "granted" },
+  { name: "Raj Kumar", programme: "SCTP - Business Analyst", stage: "Placed", employer: "OCBC", docs: "2/3", risk: "on-track", consent: "granted" },
+  { name: "Chua Bee Lian", programme: "PnT - ICT Professional", stage: "Enrolled", employer: "\u2014", docs: "0/3", risk: "on-track", consent: "granted" }
+];
+
+var matches = [
+  { trainee: "Tan Wei Ming", prog: "Full Stack Dev", position: "Junior Developer", employer: "TechCorp SG", fit: 87 },
+  { trainee: "Priya Sharma", prog: "ICT Professional", position: "IT Support Lead", employer: "DBS Bank", fit: 82 },
+  { trainee: "Marcus Lim", prog: "Business Analyst", position: "Business Analyst", employer: "Singtel", fit: 91 },
+  { trainee: "Lee Siew Lan", prog: "Business Analyst", position: "Process Analyst", employer: "OCBC", fit: 73 },
+  { trainee: "Ahmad Razak", prog: "Data Analyst", position: "Data Engineer", employer: "Grab", fit: 68 }
+];
+
+var auditEntries = [
+  { time: "14:32", user: "Sarah Chen", action: "Sent alert for Tan Wei Ming \u2014 \u201CNo employer match\u201D flagged to Account Manager" },
+  { time: "14:15", user: "System", action: "Auto-generated SSG Monthly Placement Report for March 2026" },
+  { time: "13:48", user: "Sarah Chen", action: "Verified employment for Lim Mei Ying \u2014 CPF statement uploaded and matched" },
+  { time: "13:22", user: "System", action: "Placement match suggested: Marcus Lim \u2192 Singtel (Business Analyst, 91% fit)" },
+  { time: "12:05", user: "John Tan", action: "Updated trainee record for Ahmad Razak \u2014 stage changed from \u201CTraining\u201D to \u201CCompleted\u201D" },
+  { time: "11:30", user: "System", action: "Automated reminder sent to 8 trainees for employment document submission" },
+  { time: "10:15", user: "Sarah Chen", action: "Approved enrolment for Ng Kai Wen into SCTP - Data Analyst (AI assessment: 88% fit)" },
+  { time: "09:00", user: "System", action: "Daily risk scan: 5 at-risk placements identified, 3 new since yesterday" }
+];
+
+var pdpaData = [
+  { name: "Tan Wei Ming", collection: "granted", sharing: "granted", ssg: "granted", marketing: "declined", date: "12 Mar 2026" },
+  { name: "Priya Sharma", collection: "granted", sharing: "granted", ssg: "granted", marketing: "granted", date: "8 Mar 2026" },
+  { name: "Marcus Lim", collection: "granted", sharing: "granted", ssg: "granted", marketing: "granted", date: "22 Mar 2026" },
+  { name: "Lee Siew Lan", collection: "granted", sharing: "pending", ssg: "granted", marketing: "declined", date: "15 Mar 2026" },
+  { name: "Ahmad Razak", collection: "granted", sharing: "granted", ssg: "granted", marketing: "granted", date: "18 Mar 2026" }
+];
+
+var integrations = [
+  { label: "CRM", name: "HubSpot / Dynamics 365", desc: "Bi-directional sync", bg: "var(--blue-50)", color: "var(--blue)", status: "Connected", statusClass: "badge-green" },
+  { label: "SP", name: "SharePoint", desc: "Document storage", bg: "#fff3e0", color: "#e65100", status: "Connected", statusClass: "badge-green" },
+  { label: "XL", name: "Excel Import/Export", desc: "Legacy data migration", bg: "var(--green-bg)", color: "var(--green)", status: "Active", statusClass: "badge-green" },
+  { label: "SSG", name: "SSG Reporting API", desc: "Compliance reporting", bg: "var(--slate-100)", color: "var(--slate-600)", status: "Pending Setup", statusClass: "badge-amber" },
+  { label: "EM", name: "Email Notifications", desc: "Automated reminders", bg: "#e8eaf6", color: "#283593", status: "Connected", statusClass: "badge-green" },
+  { label: "AI", name: "AI Assessment Engine", desc: "Course matching & skills analysis", bg: "#fce4ec", color: "#c62828", status: "Active", statusClass: "badge-green" }
+];
+
+// ===== RENDER FUNCTIONS =====
+function renderAtRisk() {
+  var tbody = document.getElementById("at-risk-tbody");
+  var rows = [];
+  for (var i = 0; i < atRiskData.length; i++) {
+    var d = atRiskData[i];
+    rows.push("<tr><td><strong>" + escapeHtml(d.name) + "</strong></td><td>" + escapeHtml(d.prog) +
+      "</td><td><span class='badge badge-" + d.riskLevel + "'>" + escapeHtml(d.risk) +
+      "</span></td><td>" + d.days + "</td><td><button class='btn btn-primary btn-sm' onclick='sendAlert(this)'>Alert AM</button></td></tr>");
+  }
+  tbody.innerHTML = rows.join("");
+}
+
+function renderTrainees() {
+  var tbody = document.getElementById("trainee-table");
+  var riskMap = { "on-track": ["On Track","badge-green"], "at-risk": ["At Risk","badge-amber"], "action-needed": ["Action Needed","badge-red"] };
+  var stageColors = { "Application":"badge-slate", "Enrolled":"badge-blue", "Training":"badge-blue", "Completed":"badge-amber", "Job Seeking":"badge-amber", "Placed":"badge-green", "Verified":"badge-green" };
+  var rows = [];
+  for (var i = 0; i < trainees.length; i++) {
+    var t = trainees[i];
+    var risk = riskMap[t.risk] || ["Unknown","badge-slate"];
+    var sc = stageColors[t.stage] || "badge-slate";
+    var consentBadge = t.consent === "granted" ? "badge-green" : "badge-amber";
+    var consentText = t.consent === "granted" ? "Yes" : "Pending";
+    rows.push("<tr><td><strong>" + escapeHtml(t.name) + "</strong></td><td style='font-size:0.8125rem'>" +
+      escapeHtml(t.programme) + "</td><td><span class='badge " + sc + "'>" + escapeHtml(t.stage) +
+      "</span></td><td>" + escapeHtml(t.employer) + "</td><td>" + escapeHtml(t.docs) +
+      "</td><td><span class='badge " + risk[1] + "'>" + risk[0] +
+      "</span></td><td><span class='badge " + consentBadge + "'>" + consentText + "</span></td></tr>");
+  }
+  tbody.innerHTML = rows.join("");
+}
+
+function renderMatches() {
+  var tbody = document.getElementById("match-tbody");
+  var rows = [];
+  for (var i = 0; i < matches.length; i++) {
+    var m = matches[i];
+    var color = m.fit >= 80 ? "var(--green)" : "var(--amber)";
+    rows.push("<tr><td><strong>" + escapeHtml(m.trainee) + "</strong><br><span style='font-size:0.75rem;color:var(--slate-500)'>" +
+      escapeHtml(m.prog) + "</span></td><td>" + escapeHtml(m.position) + "</td><td>" + escapeHtml(m.employer) +
+      "</td><td><div class='score-bar'><div class='score-fill'><div class='score-fill-inner' style='width:" + m.fit +
+      "%;background:" + color + "'></div></div><span class='score-value' style='color:" + color + "'>" + m.fit +
+      "%</span></div></td><td><button class='btn btn-primary btn-sm'>Send CV</button></td></tr>");
+  }
+  tbody.innerHTML = rows.join("");
+}
+
+function renderAudit() {
+  var container = document.getElementById("audit-body");
+  var entries = [];
+  for (var i = 0; i < auditEntries.length; i++) {
+    var e = auditEntries[i];
+    entries.push("<div class='audit-entry'><span class='audit-time'>" + escapeHtml(e.time) +
+      "</span><span class='audit-user'>" + escapeHtml(e.user) +
+      "</span><span class='audit-action'>" + escapeHtml(e.action) + "</span></div>");
+  }
+  container.innerHTML = entries.join("");
+}
+
+function renderPdpa() {
+  var tbody = document.getElementById("pdpa-tbody");
+  var rows = [];
+  for (var i = 0; i < pdpaData.length; i++) {
+    var p = pdpaData[i];
+    rows.push("<tr><td><strong>" + escapeHtml(p.name) + "</strong></td>" +
+      consentCell(p.collection) + consentCell(p.sharing) + consentCell(p.ssg) + consentCell(p.marketing) +
+      "<td>" + escapeHtml(p.date) + "</td></tr>");
+  }
+  tbody.innerHTML = rows.join("");
+}
+
+function consentCell(status) {
+  if (status === "granted") return "<td><span class='badge badge-green'>Granted</span></td>";
+  if (status === "pending") return "<td><span class='badge badge-amber'>Pending</span></td>";
+  return "<td><span class='badge badge-red'>Declined</span></td>";
+}
+
+function renderIntegrations() {
+  var grid = document.getElementById("integration-grid");
+  var tiles = [];
+  for (var i = 0; i < integrations.length; i++) {
+    var ig = integrations[i];
+    tiles.push("<div class='integration-tile'><div class='integration-icon' style='background:" + ig.bg + ";color:" + ig.color + "'>" +
+      escapeHtml(ig.label) + "</div><div><div style='font-weight:700;font-size:0.875rem'>" + escapeHtml(ig.name) +
+      "</div><div style='font-size:0.75rem;color:var(--slate-500)'>" + escapeHtml(ig.desc) +
+      "</div></div><div class='integration-status'><span class='badge " + ig.statusClass + "'>" + escapeHtml(ig.status) + "</span></div></div>");
+  }
+  grid.innerHTML = tiles.join("");
+}
+
+// Note: All data rendered via innerHTML is from hardcoded mock data defined above (not user input),
+// and is escaped via escapeHtml for safety.
+function escapeHtml(str) {
+  var div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
+// ===== NAVIGATION =====
+function navigateTo(page) {
+  var pages = document.querySelectorAll(".page");
+  for (var i = 0; i < pages.length; i++) pages[i].classList.remove("active");
+  var navs = document.querySelectorAll(".nav-item");
+  for (var i = 0; i < navs.length; i++) {
+    navs[i].classList.remove("active");
+    navs[i].removeAttribute("aria-current");
+  }
+  var targetPage = document.getElementById("page-" + page);
+  targetPage.classList.add("active");
+  var nav = document.querySelector('.nav-item[data-page="' + page + '"]');
+  if (nav) {
+    nav.classList.add("active");
+    nav.setAttribute("aria-current", "page");
+  }
+  // Focus management: move focus to main content area on page change
+  targetPage.setAttribute("tabindex", "-1");
+  targetPage.focus({ preventScroll: true });
+}
+
+// Keyboard support for nav items (Enter/Space)
+document.addEventListener("DOMContentLoaded", function() {
+  var navItems = document.querySelectorAll(".nav-item");
+  for (var i = 0; i < navItems.length; i++) {
+    navItems[i].addEventListener("keydown", function(e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        this.click();
+      }
+    });
+  }
+});
+
+// ===== REPORT TABS =====
+function showReportTab(el, tab) {
+  var tabs = document.querySelectorAll("#page-reports .tabs .tab");
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.remove("active");
+    tabs[i].setAttribute("aria-selected", "false");
+  }
+  el.classList.add("active");
+  el.setAttribute("aria-selected", "true");
+  document.getElementById("report-ssg").style.display = tab === "ssg" ? "block" : "none";
+  document.getElementById("report-audit").style.display = tab === "audit" ? "block" : "none";
+  document.getElementById("report-pdpa").style.display = tab === "pdpa" ? "block" : "none";
+}
+
+function activateReportTab(tab) {
+  var tabs = document.querySelectorAll("#page-reports .tabs .tab");
+  var tabMap = { ssg: 0, audit: 1, pdpa: 2 };
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.remove("active");
+    tabs[i].setAttribute("aria-selected", "false");
+  }
+  tabs[tabMap[tab]].classList.add("active");
+  tabs[tabMap[tab]].setAttribute("aria-selected", "true");
+  document.getElementById("report-ssg").style.display = tab === "ssg" ? "block" : "none";
+  document.getElementById("report-audit").style.display = tab === "audit" ? "block" : "none";
+  document.getElementById("report-pdpa").style.display = tab === "pdpa" ? "block" : "none";
+}
+
+// ===== TOAST =====
+function showToast(msg, type) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast" + (type ? " " + type : "");
+  setTimeout(function() { t.classList.add("show"); }, 10);
+  setTimeout(function() { t.classList.remove("show"); }, 3500);
+}
+
+// ===== ALERT =====
+function sendAlert(btn) {
+  var row = btn.closest("tr");
+  var nameEl = row.querySelector("td strong");
+  var name = nameEl ? nameEl.textContent : "Trainee";
+  btn.textContent = "Sent";
+  btn.disabled = true;
+  btn.style.opacity = "0.6";
+  btn.style.background = "var(--green)";
+  var riskBadge = row.querySelector(".badge-red, .badge-amber");
+  if (riskBadge) { riskBadge.className = "badge badge-blue"; riskBadge.textContent = "Alert Sent"; }
+  showToast("Alert sent to Account Manager for " + name, "success");
+}
+
+// ===== WALKTHROUGH =====
+var walkthroughs = {
+  sarah: {
+    persona: { name: "Sarah Chen", role: "Programme Coordinator", color: "#2b6cb0" },
+    steps: [
+      { page: "dashboard", target: "#kpi-grid", title: "Morning Dashboard Check", text: "Sarah opens CareerFlow each morning. The KPI cards give her an instant snapshot: 247 active trainees, 78.4% placement rate, and 5 at-risk placements needing attention." },
+      { page: "dashboard", target: "#pipeline-section", title: "Pipeline Health", text: "The trainee pipeline shows distribution across all stages. Sarah can see bottlenecks \u2014 31 trainees stuck in \u201CJob Seeking\u201D \u2014 and filter by programme to drill down." },
+      { page: "dashboard", target: "#at-risk-section", title: "At-Risk Detection", text: "CareerFlow automatically identifies at-risk placements: no employer matches, low engagement, outdated CVs, dropped employers. No more manual Excel checking." },
+      { page: "dashboard", target: "#at-risk-section", title: "One-Click Alert", text: "Sarah spots Tan Wei Ming stuck for 28 days with no employer match. One click sends an alert to the Account Manager with full context \u2014 no email drafting needed." },
+      { page: "dashboard", target: "#chart-section", title: "Programme Performance", text: "The placement rate chart shows ICT Professional leading at 88%, while Cybersecurity at 65% needs attention. Sarah can click any bar to see the trainees behind the numbers." }
+    ]
+  },
+  marcus: {
+    persona: { name: "Marcus Lim", role: "Career Switcher, 35", color: "#38a169" },
+    steps: [
+      { page: "enrolment", target: ".assessment-progress", title: "Smart Assessment Flow", text: "Marcus, a 35-year-old retail manager, completes a structured 5-step assessment. His personal details, work history, education, and career goals are captured systematically \u2014 not via a generic form emailed by a salesperson." },
+      { page: "enrolment", target: ".card", title: "AI-Powered Analysis", text: "The AI engine analyses Marcus's background and identifies transferable skills: data analysis from POS systems, team leadership, stakeholder management. It also spots skills gaps in SQL and formal requirements gathering." },
+      { page: "enrolment", target: ".course-card.recommended", title: "Best Match: Business Analyst", text: "Instead of a salesperson's subjective opinion, the system recommends Business Analyst with 92% fit \u2014 explaining WHY based on his transferable skills. Full Stack Developer shows only 41% fit with a dropout risk warning." },
+      { page: "enrolment", target: ".course-card.recommended", title: "Clear Learning Roadmap", text: "Marcus sees exactly what skills he needs to develop: SQL Fundamentals, Requirements Documentation, and UML/Process Modeling. No surprises \u2014 he knows the gap before committing." }
+    ]
+  },
+  compliance: {
+    persona: { name: "System", role: "Automated Compliance Engine", color: "#64748b" },
+    steps: [
+      { page: "reports", target: "#report-ssg", title: "Auto-Generated SSG Report", text: "CareerFlow automatically compiles the monthly placement outcome report for SSG \u2014 no more manual Excel assembly. All 247 trainees tracked, with verification status broken down by employment type.", preAction: function() { activateReportTab("ssg"); } },
+      { page: "reports", target: "#report-ssg table", title: "Employment Verification Breakdown", text: "The report shows all employment types required by SSG: LHub-matched, self-sourced, part-time, and already-employed. Verification counts are live \u2014 no manual counting needed." },
+      { page: "reports", target: null, title: "Full Audit Trail", text: "Every action is logged: who changed what, when, and why. Sarah's alert, the auto-generated report, employment verifications \u2014 all timestamped and exportable for compliance reviews.", preAction: function() { activateReportTab("audit"); } },
+      { page: "reports", target: "#report-audit .card", title: "Audit Trail in Action", text: "Every data change, system action, and user interaction is recorded. This eliminates the \u201Cwho changed what?\u201D problem and ensures audit readiness at any time." },
+      { page: "reports", target: null, title: "PDPA Consent Management", text: "Granular consent tracking per trainee: data collection, employer sharing, SSG reporting, and marketing. All consent statuses are tracked and enforced \u2014 no more guessing.", preAction: function() { activateReportTab("pdpa"); } },
+      { page: "reports", target: "#report-pdpa .card", title: "PDPA Dashboard", text: "Each trainee's consent is tracked across 4 categories. Pending consents are flagged amber. The system enforces data sharing rules based on these permissions \u2014 no manual checks needed." }
+    ]
+  }
+};
+
+var currentWT = null;
+var currentStep = 0;
+
+function openWalkthroughSelector() {
+  document.getElementById("wt-selector-overlay").style.display = "flex";
+}
+function closeWalkthroughSelector() {
+  document.getElementById("wt-selector-overlay").style.display = "none";
+}
+
+function startWalkthrough(key) {
+  closeWalkthroughSelector();
+  currentWT = walkthroughs[key];
+  currentStep = 0;
+  document.getElementById("wt-overlay").classList.add("active");
+  showWTStep();
+}
+
+function showWTStep() {
+  var step = currentWT.steps[currentStep];
+  var total = currentWT.steps.length;
+  navigateTo(step.page);
+  if (step.preAction) step.preAction();
+
+  // Persona
+  var persona = currentWT.persona;
+  var initials = persona.name.split(" ").map(function(w) { return w[0]; }).join("");
+  var personaEl = document.getElementById("wt-persona");
+  personaEl.innerHTML = "";
+  var avatarDiv = document.createElement("div");
+  avatarDiv.className = "wt-persona-avatar";
+  avatarDiv.style.background = persona.color;
+  avatarDiv.textContent = initials;
+  var infoDiv = document.createElement("div");
+  infoDiv.className = "wt-persona-info";
+  var nameDiv = document.createElement("div");
+  nameDiv.className = "name";
+  nameDiv.textContent = persona.name;
+  var roleDiv = document.createElement("div");
+  roleDiv.className = "role";
+  roleDiv.textContent = persona.role;
+  infoDiv.appendChild(nameDiv);
+  infoDiv.appendChild(roleDiv);
+  personaEl.appendChild(avatarDiv);
+  personaEl.appendChild(infoDiv);
+
+  document.getElementById("wt-title").textContent = step.title;
+  document.getElementById("wt-text").textContent = step.text;
+  document.getElementById("wt-progress-fill").style.width = ((currentStep + 1) / total * 100) + "%";
+  document.getElementById("wt-progress-text").textContent = "Step " + (currentStep + 1) + " of " + total;
+  document.getElementById("wt-prev").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("wt-next").textContent = currentStep === total - 1 ? "Finish" : "Next";
+
+  var hl = document.getElementById("wt-highlight");
+  if (step.target) {
+    var el = document.querySelector(step.target);
+    if (el) {
+      var rect = el.getBoundingClientRect();
+      hl.style.display = "block";
+      hl.style.top = (rect.top - 6) + "px";
+      hl.style.left = (rect.left - 6) + "px";
+      hl.style.width = (rect.width + 12) + "px";
+      hl.style.height = (rect.height + 12) + "px";
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  } else {
+    hl.style.display = "none";
+  }
+}
+
+function wtNext() {
+  if (currentStep >= currentWT.steps.length - 1) { endWalkthrough(); }
+  else { currentStep++; showWTStep(); }
+}
+function wtPrev() {
+  if (currentStep > 0) { currentStep--; showWTStep(); }
+}
+function endWalkthrough() {
+  document.getElementById("wt-overlay").classList.remove("active");
+  currentWT = null;
+  currentStep = 0;
+  showToast("Walkthrough complete!", "success");
+}
+
+document.addEventListener("keydown", function(e) {
+  if (!currentWT) return;
+  if (e.key === "ArrowRight" || e.key === "Enter") wtNext();
+  if (e.key === "ArrowLeft") wtPrev();
+  if (e.key === "Escape") endWalkthrough();
+});
+
+// ===== INIT =====
+renderAtRisk();
+renderTrainees();
+renderMatches();
+renderAudit();
+renderPdpa();
+renderIntegrations();
+</script>
+</body>
+</html>

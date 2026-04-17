@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerFlow — Submission Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" id="theme">
+<style>
+:root {
+  --navy: #1a365d;
+  --blue: #2b6cb0;
+  --blue-light: #3182ce;
+  --blue-50: #ebf8ff;
+  --slate-50: #f8fafc;
+  --slate-200: #e2e8f0;
+  --slate-500: #64748b;
+  --slate-700: #334155;
+  --slate-900: #0f172a;
+  --accent: #f59e0b;
+}
+.reveal { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: var(--slate-900); }
+.reveal .slides { text-align: left; }
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--navy); text-transform: none; letter-spacing: -0.02em; font-weight: 700; }
+.reveal h1 { font-size: 3.2em; line-height: 1.05; }
+.reveal h2 { font-size: 2.2em; line-height: 1.1; margin-bottom: 0.4em; }
+.reveal h3 { font-size: 1.4em; color: var(--blue); font-weight: 600; }
+.reveal p, .reveal li { font-size: 0.72em; line-height: 1.55; color: var(--slate-700); }
+.reveal strong { color: var(--slate-900); font-weight: 700; }
+.reveal ul { list-style: none; padding: 0; }
+.reveal ul li { padding-left: 1.3em; position: relative; margin-bottom: 0.6em; }
+.reveal ul li::before { content: "→"; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
+.reveal section { padding: 2em 1em; }
+
+.tag { display: inline-block; background: var(--blue-50); color: var(--blue); padding: 0.3em 0.9em; border-radius: 999px; font-size: 0.55em; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 1em; }
+.lead { font-size: 1em !important; color: var(--slate-700); font-weight: 400; line-height: 1.5; }
+
+.title-slide { text-align: center !important; }
+.title-slide h1 { color: var(--navy); font-size: 4em; margin-bottom: 0.15em; }
+.title-slide .subtitle { font-size: 1.2em; color: var(--slate-500); font-weight: 500; }
+.title-slide .meta { margin-top: 2em; font-size: 0.7em; color: var(--slate-500); }
+.title-slide .meta strong { color: var(--navy); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2em; align-items: start; }
+.grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5em; }
+.card { background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 12px; padding: 1.2em 1.3em; border-left: 3px solid var(--blue); }
+.card h4 { color: var(--navy); font-size: 0.95em; margin-bottom: 0.4em; font-weight: 700; }
+.card p { font-size: 0.65em !important; margin: 0; }
+.card .num { display: inline-block; background: var(--blue); color: white; width: 1.6em; height: 1.6em; border-radius: 50%; text-align: center; line-height: 1.6em; font-size: 0.65em; font-weight: 700; margin-right: 0.5em; vertical-align: middle; }
+
+.stat { text-align: center; padding: 1em; }
+.stat .big { font-size: 3em; font-weight: 800; color: var(--blue); line-height: 1; letter-spacing: -0.03em; }
+.stat .label { font-size: 0.7em; color: var(--slate-500); margin-top: 0.4em; font-weight: 500; }
+
+.team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5em; margin-top: 1em; }
+.team-card { background: white; border: 1px solid var(--slate-200); border-radius: 12px; padding: 1.3em; }
+.team-card .avatar { width: 48px; height: 48px; background: linear-gradient(135deg, var(--navy), var(--blue)); border-radius: 50%; margin-bottom: 0.7em; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9em; }
+.team-card h4 { font-size: 0.9em; color: var(--navy); margin-bottom: 0.1em; }
+.team-card .role { font-size: 0.62em; color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.8em; }
+.team-card p { font-size: 0.58em !important; line-height: 1.5; }
+
+.timeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.8em; margin-top: 1.2em; }
+.phase { background: var(--slate-50); border-top: 3px solid var(--blue); padding: 0.9em; border-radius: 0 0 8px 8px; }
+.phase .wk { font-size: 0.55em; color: var(--blue); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.phase h4 { font-size: 0.75em; margin: 0.3em 0 0.4em; color: var(--navy); }
+.phase ul { margin: 0; }
+.phase ul li { font-size: 0.55em !important; padding-left: 0.8em; margin-bottom: 0.25em; }
+.phase ul li::before { content: "·"; font-size: 1.4em; line-height: 0.5; }
+
+footer { position: fixed; bottom: 20px; left: 30px; font-size: 0.5em; color: var(--slate-500); font-weight: 500; }
+.page-num { position: fixed; bottom: 20px; right: 30px; font-size: 0.5em; color: var(--slate-500); font-weight: 500; }
+
+.reveal .progress { color: var(--blue); }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- 1. Title -->
+<section class="title-slide">
+  <span class="tag">IMDA Open Innovation Platform · Call 28</span>
+  <h1>CareerFlow</h1>
+  <p class="subtitle">End-to-End Career Placement Programme Management</p>
+  <div class="meta">
+    <p>Submission for <strong>NTUC LearningHub</strong> · April 2026</p>
+    <p>Humankind Design Pte Ltd</p>
+  </div>
+</section>
+
+<!-- 2. Problem -->
+<section>
+  <span class="tag">The Problem</span>
+  <h2>Placement workflows run on Excel, SharePoint, and memory.</h2>
+  <div class="grid-2" style="margin-top: 1.5em;">
+    <div>
+      <p class="lead">NTUC LHub's coordinators manage <strong>200+ trainees</strong> across multiple WSG/SSG-regulated programmes using fragmented tools:</p>
+      <ul>
+        <li>Subjective salesperson-led course matching</li>
+        <li>Manual document chasing for employment evidence</li>
+        <li>SSG compliance reports compiled by hand each month</li>
+        <li>At-risk placements spotted only after they've stalled</li>
+      </ul>
+    </div>
+    <div class="grid-4">
+      <div class="stat"><div class="big">3+</div><div class="label">Disconnected tools per coordinator</div></div>
+      <div class="stat"><div class="big">200+</div><div class="label">Trainees per programme cohort</div></div>
+      <div class="stat"><div class="big">Manual</div><div class="label">SSG monthly reporting</div></div>
+      <div class="stat"><div class="big">Reactive</div><div class="label">Risk detection</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Solution -->
+<section>
+  <span class="tag">The Solution</span>
+  <h2>One integrated platform. Four connected modules.</h2>
+  <p class="lead">CareerFlow automates the full trainee lifecycle — from enrolment through verified employment and SSG compliance — on a single, PDPA-ready platform purpose-built for workforce development.</p>
+  <div class="grid-4" style="margin-top: 1.4em;">
+    <div class="card"><h4><span class="num">1</span>Smart Enrolment</h4><p>AI assessment analyses backgrounds, identifies transferable skills, and recommends courses with confidence scores — replacing subjective evaluations with data-driven decisions.</p></div>
+    <div class="card"><h4><span class="num">2</span>Trainee Tracker</h4><p>Real-time pipeline visibility across the full journey, with automated document reminders and self-service upload for employment evidence.</p></div>
+    <div class="card"><h4><span class="num">3</span>Placement Engine</h4><p>Skills-to-job matching ranked by fit score, with proactive at-risk alerts when placements stall or employer engagement drops.</p></div>
+    <div class="card"><h4><span class="num">4</span>Analytics &amp; Compliance</h4><p>Live KPI dashboard, automated SSG reports, PDPA consent management, and comprehensive audit trails.</p></div>
+  </div>
+</section>
+
+<!-- 4. Impact -->
+<section>
+  <span class="tag">Expected Impact</span>
+  <h2>Measurable outcomes, tied to the challenge brief.</h2>
+  <div class="grid-4" style="margin-top: 2em; grid-template-columns: repeat(4, 1fr);">
+    <div class="stat"><div class="big">+10–30%</div><div class="label">Placement rates</div></div>
+    <div class="stat"><div class="big">−30–50%</div><div class="label">Admin time</div></div>
+    <div class="stat"><div class="big">100%</div><div class="label">SSG report automation</div></div>
+    <div class="stat"><div class="big">1</div><div class="label">Platform replacing 3+ tools</div></div>
+  </div>
+  <p class="lead" style="margin-top: 2em; text-align: center;">Built-in PDPA consent management and audit trails — compliance is native, not bolted on.</p>
+</section>
+
+<!-- 5. Differentiators -->
+<section>
+  <span class="tag">What Sets Us Apart</span>
+  <h2>Purpose-built for WSG/SSG programmes — not a repurposed CRM.</h2>
+  <div class="grid-4" style="margin-top: 1.5em;">
+    <div class="card"><h4>Domain-Native Design</h4><p>Understands the enrolment → training → placement → verification → reporting lifecycle natively. Compliance woven into every module.</p></div>
+    <div class="card"><h4>AI-Powered Consistency</h4><p>Confidence-scored course recommendations replace subjective assessments with standardised, defensible decisions at scale.</p></div>
+    <div class="card"><h4>Proactive Intervention</h4><p>Detects stalled pipelines, dropped engagement, outdated CVs — shifts the model from tracking to prevention.</p></div>
+    <div class="card"><h4>Integration-First</h4><p>Works alongside HubSpot, Dynamics 365, SharePoint, and Excel. No rip-and-replace migration required.</p></div>
+  </div>
+</section>
+
+<!-- 6. Prototype -->
+<section>
+  <span class="tag">Working Prototype</span>
+  <h2>Three guided walkthroughs, live today.</h2>
+  <div class="grid-2" style="margin-top: 1.5em;">
+    <div>
+      <p class="lead">A functional prototype demonstrates all four modules through scenarios drawn directly from the challenge brief:</p>
+      <ul>
+        <li><strong>Sarah</strong> · Programme Coordinator managing pipeline, dashboard, and at-risk alerts</li>
+        <li><strong>Marcus</strong> · Career Switcher experiencing AI-assisted course matching and skills-gap analysis</li>
+        <li><strong>Automated Compliance</strong> · SSG report generation, audit trail, PDPA consent tracking</li>
+      </ul>
+      <p style="margin-top: 1.5em;"><a href="./index.html" style="color: var(--blue); font-weight: 600; font-size: 0.8em;">▸ View live prototype</a></p>
+    </div>
+    <div class="card" style="background: var(--navy); color: white; border-left-color: var(--accent);">
+      <h4 style="color: white;">Production Stack</h4>
+      <p style="color: rgba(255,255,255,0.85) !important;">React/Next.js · Node.js · PostgreSQL · AWS · Claude / GPT for intelligent matching · REST APIs for HubSpot, Dynamics 365, SharePoint · PDPA-compliant RBAC, encryption, audit logging</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Team -->
+<section>
+  <span class="tag">The Team</span>
+  <h2>30+ combined years building enterprise management platforms.</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="avatar">SJ</div>
+      <h4>Soh Ju Hu</h4>
+      <div class="role">Strategist &amp; Project Lead</div>
+      <p>10 years in workflow design and digital product development. Translates complex operational processes into intuitive digital solutions. Has led management platforms across logistics, F&amp;B, and retail — all involving multi-stakeholder workflows and compliance requirements. Owns solution architecture, client engagement, and delivery.</p>
+    </div>
+    <div class="team-card">
+      <div class="avatar">JS</div>
+      <h4>Jemima Song</h4>
+      <div class="role">Lead Designer</div>
+      <p>10 years in UI/UX, product design, and branding. Expert in enterprise systems that balance information density with usability — critical for coordinators managing 200+ trainees. Leads user research, interaction design, and the design system. Ensures accessibility and minimal training overhead.</p>
+    </div>
+    <div class="team-card">
+      <div class="avatar">TN</div>
+      <h4>Tung Nguyen</h4>
+      <div class="role">Chief Technology Officer</div>
+      <p>10 years in software engineering and product. Deep expertise in full-stack web (React, Node.js, PostgreSQL), AI/ML integration, and enterprise integration (CRM, SharePoint, reporting APIs). Owns technical architecture, AWS infrastructure, PDPA-compliant data security, and production deployment. Scales platforms to 10,000+ concurrent users.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Timeline -->
+<section>
+  <span class="tag">Delivery Plan</span>
+  <h2>16 weeks from discovery to pilot deployment.</h2>
+  <div class="timeline">
+    <div class="phase">
+      <div class="wk">Weeks 1–3</div>
+      <h4>Discovery &amp; Design</h4>
+      <ul><li>Stakeholder interviews</li><li>Workflow mapping</li><li>UX sprints &amp; user testing</li></ul>
+    </div>
+    <div class="phase">
+      <div class="wk">Weeks 4–8</div>
+      <h4>Core Platform Build</h4>
+      <ul><li>Smart Enrolment + AI engine</li><li>Trainee Tracker</li><li>CRM + SharePoint integration</li></ul>
+    </div>
+    <div class="phase">
+      <div class="wk">Weeks 9–11</div>
+      <h4>Matching &amp; Reporting</h4>
+      <ul><li>Placement Engine</li><li>Analytics dashboard</li><li>SSG reporting, PDPA, audit</li></ul>
+    </div>
+    <div class="phase">
+      <div class="wk">Weeks 12–14</div>
+      <h4>Testing &amp; Refinement</h4>
+      <ul><li>UAT with NTUC LHub staff</li><li>Performance + security</li><li>Training materials</li></ul>
+    </div>
+    <div class="phase">
+      <div class="wk">Weeks 15–16</div>
+      <h4>Pilot Deployment</h4>
+      <ul><li>One programme cohort</li><li>Feedback + iteration</li><li>Handover &amp; support</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- 9. Scalability -->
+<section>
+  <span class="tag">Scalability &amp; Cost</span>
+  <h2>SaaS economics. Government-grade architecture.</h2>
+  <div class="grid-2" style="margin-top: 1.5em;">
+    <div>
+      <h3>Architecture</h3>
+      <ul>
+        <li>Cloud-native on AWS — aligned with NTUC LHub's existing infrastructure</li>
+        <li>Microservices enable independent scaling per module</li>
+        <li>API-first design for future integrations with additional government systems</li>
+      </ul>
+      <h3 style="margin-top: 1.2em;">Cost Model</h3>
+      <ul>
+        <li>SaaS subscription — no upfront infrastructure investment</li>
+        <li>Pricing scales with programmes/trainees, not per-user</li>
+        <li><strong>SGD 3,000–8,000/month</strong> at typical scale — below combined cost of current tooling + manual staff time</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Growth Path</h3>
+      <ul>
+        <li>Expandable to other training providers, polytechnics, and government agencies running career transition programmes</li>
+        <li>Applicable beyond ICT: healthcare, finance, logistics, green economy — any sector tracking career placements</li>
+        <li>API marketplace for employer integration — job posting sync, interview scheduling</li>
+      </ul>
+      <div class="card" style="margin-top: 1.5em; border-left-color: var(--accent);">
+        <h4>Readiness</h4>
+        <p>Prototype / Proof of Concept · Easily Scalable · Team ready to work on-site with NTUC LHub in Singapore.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. Close -->
+<section class="title-slide">
+  <span class="tag">Thank you</span>
+  <h1 style="font-size: 3em;">Let's automate placement.<br/>Together.</h1>
+  <div class="meta">
+    <p><strong>Humankind Design Pte Ltd</strong></p>
+    <p>juhu@humankind.design</p>
+    <p style="margin-top: 1em;"><a href="./index.html" style="color: var(--blue); font-weight: 600;">View live prototype ▸</a></p>
+  </div>
+</section>
+
+</div>
+</div>
+
+<footer>CareerFlow · NTUC LHub · IMDA OIP Call 28</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  transition: 'slide',
+  controls: true,
+  progress: true,
+  center: false,
+  width: 1280,
+  height: 800,
+  margin: 0.06
+});
+</script>
+</body>
+</html>
